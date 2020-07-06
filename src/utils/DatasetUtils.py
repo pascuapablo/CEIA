@@ -1,3 +1,4 @@
+from enum import Enum
 import numpy as np
 
 
@@ -19,7 +20,10 @@ class DatasetUtils:
         self.ds = self.ds / std
         return self.ds
 
+    def replace_nan_with_mean(self, axis: int):
+        ds_average = np.nanmean(self.ds, axis)
 
+    pass
 
     #
     # MAX_ITERATIONS = 10
