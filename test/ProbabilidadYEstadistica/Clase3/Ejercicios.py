@@ -47,5 +47,6 @@ class Ejercicios(unittest.TestCase):
         print("Desvio sesgado (1000 muestras) ", sn_1000)
         print("Desvio no sesgado (1000 muestras) ", sn_1000_unbiased)
 
-        if __name__ == '__main__':
-            unittest.main()
+
+if __name__ == '__main__':
+    unittest.main()
