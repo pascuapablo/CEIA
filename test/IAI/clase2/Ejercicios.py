@@ -12,7 +12,7 @@ class Ejercicios(unittest.TestCase):
         self.SAMPLES = 100000
         self.CLUSTER_DIM = 4
         self.CLUSTER_N_CENTROIDS = 3
-        self.SAVE_PATH = "./resoruces/data.pkl"
+        self.SAVE_PATH = "resoruces/data.pkl"
 
         # np.set_printoptions(precision=2)
         # np.set_printoptions(suppress=True)
