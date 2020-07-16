@@ -1,14 +1,14 @@
 import numpy as np
-from ..MLBaseModel import MLBaseModel
+from src.machineLearning.IMLBaseModel import IMLBaseModel
 
 
-class Kmeans(MLBaseModel):
+class Kmeans(IMLBaseModel):
 
     def __init__(self, n_clusters):
         super().__init__()
         self.n_clusters = n_clusters
 
-    def fit(self, x, y=None):
+    def fit(self, x, y=None) -> np.ndarray:
         centroid_indexes = np.random.uniform(0, x.shape[0], self.n_clusters).astype(int)
         centroids = x[centroid_indexes, :]
         expanded_centroids = centroids[:, None]
@@ -31,4 +31,4 @@ class Kmeans(MLBaseModel):
         return centroids
 
     def predict(self, x):
-        pass
+        raise NotImplementedError

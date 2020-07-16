@@ -1,11 +1,16 @@
-from enum import Enum
+from typing import Tuple
+
 import numpy as np
+import pickle
 
 
 class DatasetUtils(object):
 
-    def __init__(self, dataset: np.ndarray):
-        self.ds = dataset
+    def __init__(self, dataset: np.ndarray = None, path: str = None):
+        if dataset is not None:
+            self.ds = dataset
+        else:
+            self.ds = np.genfromtxt(path, delimiter=',')[1:, :]
 
     def get_dataset(self) -> np.ndarray:
         return self.ds
@@ -27,25 +32,34 @@ class DatasetUtils(object):
         v = v[:, idx]
         return np.matmul(x2, v[:, :n_dim])
 
-    def k_means(self, clusters: int):
+    def split(self, percentage: int) -> Tuple[np.ndarray, np.ndarray]:
+        randomized_ds = np.random.permutation(self.ds)
+        train_rows = np.round((percentage * randomized_ds.shape[0]) / 100).astype(int)
+        ds_train = randomized_ds[0:train_rows, :]
+        ds_test = randomized_ds[train_rows:, :]
 
-        centroid_indexes = np.random.uniform(0, self.ds.shape[0], clusters).astype(int)
-        centroids = self.ds[centroid_indexes, :]
-        expanded_centroids = centroids[:, None]
-        gradient = np.zeros(11)
-        median = 0
-        for j in range(10):
-            distance_matrix = np.sqrt(np.sum((expanded_centroids - self.ds) ** 2, axis=2))
+        return ds_train, ds_test
 
-            gradient[j] = np.median(distance_matrix) - median
-            median = np.median(distance_matrix)
+    def save_dataset(self, path: str) -> bool:
+        file = None
+        try:
+            file = open(path, "wb")
+            pickle.dump(self.ds, file)
+            return True
+        except Exception:
+            return False
+        finally:
+            if file is not None:
+                file.close()
 
-            arg_min = np.argmin(distance_matrix, axis=0)
+    def load_dataset(self, path: str) -> np.ndarray:
+        file = None
+        try:
+            file = open(path, 'rb')
+            return pickle.load(file)
+        finally:
+            file.close()
 
-            for i in range(clusters):
-                centroids[i, :] = np.mean(self.ds[arg_min == i, :], axis=0)
-
-        print(gradient)
-        return centroids
-
-    
+    @staticmethod
+    def load_fromCSV(path: str):
+        return np.genfromtxt(path, delimiter=',')

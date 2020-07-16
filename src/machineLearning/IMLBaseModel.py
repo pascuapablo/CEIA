@@ -3,7 +3,7 @@ from typing import Union
 import numpy as np
 
 
-class MLBaseModel(object):
+class IMLBaseModel(object):
 
     def __init__(self):
         self.model = None
@@ -13,6 +13,6 @@ class MLBaseModel(object):
 
         raise NotImplementedError
 
-    def predict(self, y):
+    def predict(self, x):
         # return Y hat
         raise NotImplementedError

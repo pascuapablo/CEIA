@@ -2,6 +2,6 @@ from src.machineLearning.metrics.IMetric import IMetric
 import numpy as np
 
 
-class MSE(IMetric):
+class ErrorMedian(IMetric):
     def __call__(self, target, prediction):
-        return np.sqrt(np.sum((target - prediction) ** 2))
+        return np.median((target - prediction))

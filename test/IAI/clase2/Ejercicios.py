@@ -1,6 +1,7 @@
 import unittest
 import numpy as np
-import src.utils.ClusterUtils as C
+import src.machineLearning.clustering.ClusterUtils as C
+from src.machineLearning.clustering.Kmeans import Kmeans
 from src.utils.DatasetUtils import DatasetUtils
 from src.utils.FileUtils import FileUtils
 from src.utils.RandomUtils import RandomUtils
@@ -67,7 +68,7 @@ class Ejercicios(unittest.TestCase):
 
         plot.scatter(x[:, 0], x[:, 1])
 
-        centroids = DatasetUtils(x).k_means(2)
+        centroids = Kmeans(2).fit(x)
         plot.scatter(centroids[:, 0], centroids[:, 1], c='red')
 
         plot.show()
