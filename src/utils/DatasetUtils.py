@@ -2,7 +2,7 @@ from enum import Enum
 import numpy as np
 
 
-class DatasetUtils:
+class DatasetUtils(object):
 
     def __init__(self, dataset: np.ndarray):
         self.ds = dataset
@@ -48,3 +48,4 @@ class DatasetUtils:
         print(gradient)
         return centroids
 
+    
