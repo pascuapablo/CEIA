@@ -1,7 +1,7 @@
 import unittest
 
-from src.machineLearning.metrics.ErrorMean import ErrorMean
-from src.machineLearning.metrics.ErrorMedian import ErrorMedian
+from src.machineLearning.metrics.MeanError import MeanError
+from src.machineLearning.metrics.MedianError import MedianError
 from src.machineLearning.metrics.MSE import MSE
 from src.machineLearning.regresion.LinearRegression import LinearRegression
 from src.machineLearning.regresion.LinearRegressionAfine import LinearRegressionAffine
@@ -34,14 +34,17 @@ class Ejercicios(unittest.TestCase):
         plot.scatter(x_test[:, 1], y_lra_predict, c="yellow")
         plot.show()
 
-        metrics = [MSE(), ErrorMedian(), ErrorMean()]
+        metrics = [MSE(), MedianError(), MeanError()]
 
         print("Metric", "LinearRegression", "LinearRegressionAffine")
         for metric in metrics:
-            metric_name = type(metric).__name__
-            print(metric_name, metric(target=y_real, prediction=y_lr_predict),
+            print(metric.get_name(), metric(target=y_real, prediction=y_lr_predict),
                   metric(target=y_real, prediction=y_lra_predict))
 
+        # Metric        LinearRegression        LinearRegressionAffine
+        # MSE           3.64650918978914        3.4685120979301836
+        # MedianError   0.007340468339615436    -0.01885682436420999
+        # MeanError     0.021328249515553076    -0.0025382219110967837
         self.assertTrue(True)
 
 
