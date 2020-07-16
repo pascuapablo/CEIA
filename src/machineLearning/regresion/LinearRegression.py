@@ -13,7 +13,6 @@ class LinearRegression(IMLBaseModel):
         w = np.linalg.inv(x_train.T @ x_train) @ x_train.T @ y
 
         self.model: np.ndarray = w
-        # self.model: np.ndarray = w[:, None] if w.ndim == 1 else w
 
     def predict(self, x):
         x_to_predict = x
@@ -23,4 +22,4 @@ class LinearRegression(IMLBaseModel):
         if self.model.ndim == 1:
             return x_to_predict * self.model
         else:
-            return np.matmul(self.model.shape, x_to_predict)
+            return np.matmul(self.model.T, x_to_predict)

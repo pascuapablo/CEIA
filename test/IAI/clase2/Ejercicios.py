@@ -3,7 +3,6 @@ import numpy as np
 import src.machineLearning.clustering.ClusterUtils as C
 from src.machineLearning.clustering.Kmeans import Kmeans
 from src.utils.DatasetUtils import DatasetUtils
-from src.utils.FileUtils import FileUtils
 from src.utils.RandomUtils import RandomUtils
 import matplotlib.pyplot as plot
 
@@ -13,7 +12,7 @@ class Ejercicios(unittest.TestCase):
         self.SAMPLES = 100000
         self.CLUSTER_DIM = 4
         self.CLUSTER_N_CENTROIDS = 3
-        self.SAVE_PATH = "resoruces/data.pkl"
+        self.SAVE_PATH = "./resoruces/data.pkl"
 
         # np.set_printoptions(precision=2)
         # np.set_printoptions(suppress=True)
@@ -29,11 +28,11 @@ class Ejercicios(unittest.TestCase):
         uniform = np.random.uniform(0, 1, (self.SAMPLES, self.CLUSTER_DIM))
         uniform = np.where(uniform < 0.1, np.NaN, 0)
         x = x + uniform
-
-        FileUtils.save_dataset(x, self.SAVE_PATH)
+        print(x)
+        DatasetUtils.save_dataset(x, self.SAVE_PATH)
 
     def test_ejercicios4a7(self):
-        x = FileUtils.load_dataset(self.SAVE_PATH)
+        x = DatasetUtils.load_dataset(self.SAVE_PATH)
         x_average = np.nanmean(x, axis=0)
 
         x = np.where(np.isnan(x), x_average, x)
@@ -43,7 +42,7 @@ class Ejercicios(unittest.TestCase):
         x_std = x.std(axis=0)
 
     def test_ejercicio7y8(self):
-        x = FileUtils.load_dataset(self.SAVE_PATH)
+        x = DatasetUtils.load_dataset(self.SAVE_PATH)
         exp = RandomUtils.exp(0.1, self.SAMPLES).reshape(self.SAMPLES, 1)
         exp = np.append(x, exp, axis=1)
         plot.hist(exp[:, -1], 50)

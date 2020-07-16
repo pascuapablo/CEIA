@@ -1,4 +1,5 @@
 from typing import Tuple
+import os
 
 import numpy as np
 import pickle
@@ -40,19 +41,20 @@ class DatasetUtils(object):
 
         return ds_train, ds_test
 
-    def save_dataset(self, path: str) -> bool:
+    @staticmethod
+    def save_dataset(dataset, path: str) -> bool:
         file = None
         try:
             file = open(path, "wb")
-            pickle.dump(self.ds, file)
+            pickle.dump(dataset, file)
             return True
-        except Exception:
-            return False
+
         finally:
             if file is not None:
                 file.close()
 
-    def load_dataset(self, path: str) -> np.ndarray:
+    @staticmethod
+    def load_dataset(path: str) -> np.ndarray:
         file = None
         try:
             file = open(path, 'rb')
