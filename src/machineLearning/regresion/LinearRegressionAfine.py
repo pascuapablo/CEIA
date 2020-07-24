@@ -31,4 +31,4 @@ class LinearRegressionAffine(IMLBaseModel):
         if self.model.ndim == 1 or (self.model.shape[0] == 1 and self.model.shape[1] == 1):
             return x_to_predict * self.model + self.bias
         else:
-            return np.matmul(self.model.T, x_to_predict)
+            return np.matmul(self.model.T, x_to_predict.T)

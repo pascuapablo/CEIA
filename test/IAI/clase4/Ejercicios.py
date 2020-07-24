@@ -4,14 +4,16 @@ import matplotlib.pyplot as plot
 
 from src.machineLearning.metrics.MSE import MSE
 from src.machineLearning.regresion.LinearRegression import LinearRegression
+from src.machineLearning.regresion.LinearRegressionAfine import LinearRegressionAffine
 from src.utils.DatasetUtils import DatasetUtils
 
 
 class MyTestCase(unittest.TestCase):
 
     def test_something(self):
-        N = 10
-        prediction_error = []
+        N = 6
+        lr_prediction_error = []
+        lra_prediction_error = []
         ds = DatasetUtils(path="../clase3/resources/dataset.csv")
 
         ds_train, ds_test = ds.split(80)
@@ -25,12 +27,16 @@ class MyTestCase(unittest.TestCase):
 
             y_test = ds_test[:, 2:3]
             y_train = ds_train[:, 2:3]
-            print("x train", x_train.shape)
             lr = LinearRegression()
             lr.fit(x_train, y_train)
-            print("W", lr.model.shape)
             y_lr_predict = lr.predict(x_test)
-            prediction_error.append(MSE()(y_test, y_lr_predict))
+            lr_prediction_error.append(MSE()(y_test, y_lr_predict))
+
+            lra = LinearRegressionAffine()
+            lra.fit(x_train, y_train)
+            y_lra_predict = lra.predict(x_test)
+            lra_prediction_error.append(MSE()(y_test, y_lra_predict))
+
 
             # plot.figure(j)
             # plot.scatter(x_test[:, 1], y_test, c="blue")
@@ -38,10 +44,12 @@ class MyTestCase(unittest.TestCase):
             # plot.show()
 
         plot.figure("MSE")
-        plot.plot(range(1, N), prediction_error)
+        plot.plot(range(1, N), lr_prediction_error)
+        plot.plot(range(1, N), lra_prediction_error)
         plot.xlabel("Cantidad de dimensiones")
         plot.ylabel("MSE")
         plot.show()
+
 
 
 
