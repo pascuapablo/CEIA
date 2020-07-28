@@ -11,7 +11,7 @@ from src.utils.DatasetUtils import DatasetUtils
 class MyTestCase(unittest.TestCase):
 
     def test_something(self):
-        N = 6
+        N = 5
         lr_prediction_error = []
         lra_prediction_error = []
         ds = DatasetUtils(path="../clase3/resources/dataset.csv")
@@ -38,13 +38,13 @@ class MyTestCase(unittest.TestCase):
             lra_prediction_error.append(MSE()(y_test, y_lra_predict))
 
 
-            # plot.figure(j)
-            # plot.scatter(x_test[:, 1], y_test, c="blue")
-            # plot.scatter(x_test[:, 1], y_lr_predict, c="red")
-            # plot.show()
+            plot.figure(j)
+            plot.scatter(x_test[:, 1], y_test, c="blue")
+            plot.scatter(x_test[:, 1], y_lr_predict, c="red")
+            plot.show()
 
         plot.figure("MSE")
-        plot.plot(range(1, N), lr_prediction_error)
+        # plot.plot(range(1, N), lr_prediction_error)
         plot.plot(range(1, N), lra_prediction_error)
         plot.xlabel("Cantidad de dimensiones")
         plot.ylabel("MSE")
