@@ -1,8 +1,7 @@
+import pickle
 from typing import Tuple
-import os
 
 import numpy as np
-import pickle
 
 
 class DatasetUtils(object):

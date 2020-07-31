@@ -1,6 +1,7 @@
 import unittest
-import numpy as np
+
 import matplotlib.pyplot as plot
+import numpy as np
 
 from src.machineLearning.metrics.MSE import MSE
 from src.machineLearning.regresion.LinearRegression import LinearRegression
@@ -38,19 +39,12 @@ class MyTestCase(unittest.TestCase):
             lra_prediction_error.append(MSE()(y_test, y_lra_predict))
 
 
-            plot.figure(j)
-            plot.scatter(x_test[:, 1], y_test, c="blue")
-            plot.scatter(x_test[:, 1], y_lr_predict, c="red")
-            plot.show()
-
         plot.figure("MSE")
         # plot.plot(range(1, N), lr_prediction_error)
         plot.plot(range(1, N), lra_prediction_error)
         plot.xlabel("Cantidad de dimensiones")
         plot.ylabel("MSE")
         plot.show()
-
-
 
 
 if __name__ == '__main__':
