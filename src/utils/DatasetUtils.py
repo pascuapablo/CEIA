@@ -6,11 +6,11 @@ import numpy as np
 
 class DatasetUtils(object):
 
-    def __init__(self, dataset: np.ndarray = None, path: str = None):
+    def __init__(self, dataset: np.ndarray = None, path: str = None, delimiter=','):
         if dataset is not None:
             self.ds = dataset
         else:
-            self.ds = np.genfromtxt(path, delimiter=',')[1:, :]
+            self.ds = np.genfromtxt(path, delimiter=delimiter)[1:, :]
 
     def get_dataset(self) -> np.ndarray:
         return self.ds
