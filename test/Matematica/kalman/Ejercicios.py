@@ -37,18 +37,15 @@ class MyTestCase(unittest.TestCase):
 
     def test_ejercicio1(self):
         C = np.append(np.eye(3), np.zeros((3, 6)), axis=1)
-        measurement_noise = 10
+        measurement_noise = 100
         R = np.eye(3) * measurement_noise
 
         kf = KalmanFilter(self.x0, self.P0, self.A, self.B, C, self.Q, R)
 
         ds_p = DatasetUtils(path='./resources/posicion.dat', delimiter=None)
         position = ds_p.get_dataset()[:, 1:]
-        y = position + np.random.normal(0, measurement_noise, position.shape)
+        y = position + np.random.normal(0, np.sqrt(measurement_noise), position.shape)
 
-        # y = position + np.random.uniform(0, np.sqrt(np.sqrt(measurement_noise) * 12), position.shape)
-        # y = position + np.random.uniform(- np.sqrt(np.sqrt(measurement_noise) * 12 / 4),
-        #                                  np.sqrt(np.sqrt(measurement_noise) * 12), position.shape)
         est_position = np.zeros((len(position), 9))
         error = np.zeros((len(position), 3))
 
@@ -65,7 +62,7 @@ class MyTestCase(unittest.TestCase):
 
     def test_ejercicio2_ruido_normal_con_media(self):
         C = np.append(np.eye(3), np.zeros((3, 6)), axis=1)
-        measurement_noise = 10
+        measurement_noise = 100
         R = np.eye(3) * measurement_noise
 
         kf = KalmanFilter(self.x0, self.P0, self.A, self.B, C, self.Q, R)
@@ -73,7 +70,7 @@ class MyTestCase(unittest.TestCase):
         ds_p = DatasetUtils(path='./resources/posicion.dat', delimiter=None)
         position = ds_p.get_dataset()[:, 1:]
 
-        y = position + np.random.uniform(0, np.sqrt(np.sqrt(measurement_noise) * 12), position.shape)
+        y = position + np.random.uniform(0, np.sqrt(measurement_noise * 12), position.shape)
         # y = position + np.random.uniform(- np.sqrt(np.sqrt(measurement_noise) * 12 / 4),
         #                                  np.sqrt(np.sqrt(measurement_noise) * 12), position.shape)
         estimated_position = np.zeros((len(position), 9))
@@ -92,16 +89,15 @@ class MyTestCase(unittest.TestCase):
 
     def test_ejercicio2_ruido_normal_sin_media(self):
         C = np.append(np.eye(3), np.zeros((3, 6)), axis=1)
-        measurement_noise = 10
+        measurement_noise = 100
         R = np.eye(3) * measurement_noise
 
         kf = KalmanFilter(self.x0, self.P0, self.A, self.B, C, self.Q, R)
 
         ds_p = DatasetUtils(path='./resources/posicion.dat', delimiter=None)
         position = ds_p.get_dataset()[:, 1:]
-
-        y = position + np.random.uniform(- np.sqrt(np.sqrt(measurement_noise) * 12 / 4),
-                                         np.sqrt(np.sqrt(measurement_noise) * 12 / 4), position.shape)
+        y = position + np.random.uniform(- np.sqrt(measurement_noise * 12 / 4),
+                                         np.sqrt(measurement_noise * 12 / 4), position.shape)
 
         estimated_position = np.zeros((len(position), 9))
         prediction_error = np.zeros((len(position), 3))
@@ -113,14 +109,14 @@ class MyTestCase(unittest.TestCase):
             estimated_position[i, :] = est_x.T
             prediction_error[i, :] = position[i, :] - est_x.T[:, 0:3]
 
-        self.plot_estimation(position, estimated_position, "Trayectoria real vs estimada ruido normal (-a,a)")
-        self.plot_errors(prediction_error, "Error sobre los ejes X, Y y Z con medicion con ruido ormal (-a,a)")
+        self.plot_estimation(position, estimated_position, "Trayectoria real vs estimada ruido uniforme (-a,a)")
+        self.plot_errors(prediction_error, "Error sobre los ejes X, Y y Z con medicion con ruido uniforme (-a,a)")
         plt.show()
 
     def test_ejercicio3(self):
         C = np.append(np.eye(6), np.zeros((6, 3)), axis=1)
-        position_measurement_noise = 10
-        speed_measurement_noise = 0.2
+        position_measurement_noise = 100
+        speed_measurement_noise = 0.04
         R = np.array([[position_measurement_noise, 0, 0, 0, 0, 0],
                       [0, position_measurement_noise, 0, 0, 0, 0],
                       [0, 0, position_measurement_noise, 0, 0, 0],
@@ -132,11 +128,11 @@ class MyTestCase(unittest.TestCase):
 
         ds_p = DatasetUtils(path='./resources/posicion.dat', delimiter=None)
         position = ds_p.get_dataset()[:, 1:]
-        y = position + np.random.normal(0, position_measurement_noise, position.shape)
+        y = position + np.random.normal(0, np.sqrt(position_measurement_noise), position.shape)
 
         ds_s = DatasetUtils(path='./resources/velocidad.dat', delimiter=None)
         speed = ds_s.get_dataset()[:, 1:]
-
+        speed = speed + + np.random.normal(0, np.sqrt(speed_measurement_noise), speed.shape)
         y = np.append(y, speed, axis=1)
 
         estimated_position = np.zeros((len(position), 9))
@@ -175,6 +171,9 @@ class MyTestCase(unittest.TestCase):
         axs[2].plot(range(len(error)), np.mean(error[:, 2]) * np.ones(len(error)),
                     label="Media " + str(np.mean(error[:, 2]).round(2)))
         axs[2].legend()
+
+        plt.figure()
+        plt.hist(error[:, 0])
 
 
 if __name__ == '__main__':
