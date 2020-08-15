@@ -23,7 +23,7 @@ class MyTestCase(unittest.TestCase):
 
         plot.figure()
         minError = 1000000
-        minErrorIndex = -1
+        minErrorOrder = -1
 
         # El problema de regresion lineal se resuelve analiticamente a partir de tratar de minimizar
         # el error cuadratico medio, con lo cual es logico luego testear los modelos con esa medida del error
@@ -45,20 +45,24 @@ class MyTestCase(unittest.TestCase):
 
             if minError > validation_min_error:
                 minError = validation_min_error
-                minErrorIndex = i
+                minErrorOrder = i
 
-        print("[test_something] El orden del modelo con menor error fue el ", minErrorIndex)
+        print("[test_something] El orden del modelo con menor error fue el ", minErrorOrder)
         # [test_something] El orden del modelo con menor error fue el  3
-        bestModel = models[3]
+
+        bestModel = models[minErrorOrder - 1]
         plot.figure()
         plot.scatter(x_test, y_test, c='red', label="target")
-        plot.scatter(x_test, bestModel.predict(y_test), c='blue', label="prediccion")
-        x = np.linspace(-400, 400, 1000)
+        plot.scatter(x_test, bestModel.predict(x_test), c='blue', label="prediccion")
 
-        model = bestModel.model[0] * (x ** 3) + bestModel.model[1] * (x ** 2) + bestModel.model[2] * x + \
-                bestModel.model[3]
-        # plot.plot(model, c='green', label="modelo")
-        print("[test_ejercicio3] modelo", bestModel.model)
+        x_axis = np.linspace(-400, 400, 1000)
+        x = x_axis[:, None]
+        for i in range(1, minErrorOrder):
+            x = np.append(x, x[:, 0:1] ** (i + 1), axis=1)
+        x = np.append(x, np.ones((x.shape[0], 1)), axis=1)
+
+        model = (bestModel.model.T @ x.T).T
+        plot.plot(x_axis,model, c='green', label="modelo")
         plot.legend()
         plot.show()
 
@@ -82,14 +86,15 @@ class MyTestCase(unittest.TestCase):
         plot.plot(lr.algorithm.error, c='green', label="Error de entrenamiento")
         plot.plot(lr.algorithm.validationError, label="Error sobre validación")
         plot.legend()
-        plot.show()
 
         y_predict = lr.predict(x_test)
         print("[test_ejercicio4] MSE", MSE()(y_test, y_predict))
 
         plot.figure()
-        plot.plot(x_test,y_test)
-        plot.plot(x_test,y_predict)
+        plot.plot(x_test, y_test)
+        plot.plot(x_test, y_predict)
+        plot.show()
+
 
 if __name__ == '__main__':
     unittest.main()
