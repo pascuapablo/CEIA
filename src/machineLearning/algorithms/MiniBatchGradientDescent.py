@@ -33,12 +33,12 @@ class MiniBatchGradientDescent(ILinearAlgorithm):
         y_train = y[0:round(n / 5)]
 
         # initialize random weights
-        W = np.random.randn(m).reshape(m, 1)
+        W = np.random.randn(m).reshape(m, 1)/100
 
         batch_size = int(len(x_train) / self.n_batches)
 
-        self.error = np.zeros(self.n_epochs)
-        self.validationError = np.zeros(self.n_epochs)
+        self.error = np.zeros((self.n_epochs, self.n_batches))
+        self.validationError = np.zeros((self.n_epochs, self.n_batches))
 
         for i in range(self.n_epochs):
             idx = np.random.permutation(x_train[0:(batch_size * self.n_batches)].shape[0])
@@ -59,10 +59,10 @@ class MiniBatchGradientDescent(ILinearAlgorithm):
                 # print(error)
                 # print("[run] error", error.shape)
 
-                self.error[i] = np.sqrt(np.sum(error ** 2, axis=0)) / batch_size
-                self.validationError[i] = np.sqrt(
-                    np.sum((self.prediction_function.predict(W, x_validation) - y_validation) ** 2,
-                           axis=0)) / len(x_validation)
+                self.error[i, int(j / batch_size)] = np.mean(error ** 2, axis=0)
+                self.validationError[i, int(j / batch_size)] = np.mean(
+                    (self.prediction_function.predict(W, x_validation) - y_validation) ** 2,
+                    axis=0)
 
                 loss = error * batch_X
                 # print("[run] loss", loss.shape)
@@ -71,7 +71,9 @@ class MiniBatchGradientDescent(ILinearAlgorithm):
 
                 # print("[run] gradient", gradient.shape)
                 W = W - (self.lr * gradient.T)
-                # print("[run] w",W.shape)
+                #print("[run] w",W)
 
         # self.error = np.mean(np.sqrt(np.sum(self.error ** 2, axis=0) / batch_size), axis=0)
+        self.error = np.mean(self.error, axis=1)
+        self.validationError = np.mean(self.validationError, axis=1)
         return W

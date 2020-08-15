@@ -51,6 +51,8 @@ class MyTestCase(unittest.TestCase):
         # [test_something] El orden del modelo con menor error fue el  3
 
         bestModel = models[minErrorOrder - 1]
+        print("[test_ejercicio3] Mejor modelo", bestModel.model)
+        print("[test_ejercicio3] Mejor modelo MSE", error(target=y_test, prediction=bestModel.predict(x_test)))
         plot.figure()
         plot.scatter(x_test, y_test, c='red', label="target")
         plot.scatter(x_test, bestModel.predict(x_test), c='blue', label="prediccion")
@@ -62,7 +64,7 @@ class MyTestCase(unittest.TestCase):
         x = np.append(x, np.ones((x.shape[0], 1)), axis=1)
 
         model = (bestModel.model.T @ x.T).T
-        plot.plot(x_axis,model, c='green', label="modelo")
+        plot.plot(x_axis, model, c='green', label="modelo")
         plot.legend()
         plot.show()
 
@@ -76,8 +78,11 @@ class MyTestCase(unittest.TestCase):
         x_test = ds_test[:, 0:1]
         y_test = ds_test[:, 1:2]
 
-        lr = LinearRegressionAffine(order=1, algorithm=MiniBatchGradientDescent(learning_rate=0.0001, n_epochs=60000,
-                                                                                n_batches=16))
+        order = 3
+        lr = LinearRegressionAffine(order=order,
+                                    algorithm=MiniBatchGradientDescent(learning_rate=0.00000000000003,
+                                                                       n_epochs=30000,
+                                                                       n_batches=30))
 
         lr.fit(x_train, y_train)
 
@@ -85,15 +90,33 @@ class MyTestCase(unittest.TestCase):
         print("[test_ejercicio4] error", lr.algorithm.error)
         plot.plot(lr.algorithm.error, c='green', label="Error de entrenamiento")
         plot.plot(lr.algorithm.validationError, label="Error sobre validación")
+        plot.ylim(top=1000, bottom=0)
         plot.legend()
 
         y_predict = lr.predict(x_test)
         print("[test_ejercicio4] MSE", MSE()(y_test, y_predict))
 
         plot.figure()
-        plot.plot(x_test, y_test)
-        plot.plot(x_test, y_predict)
+        plot.scatter(x_test, y_test, c='red', label="target")
+        plot.scatter(x_test, y_predict, c='blue', label="prediccion")
+
+        x_axis = np.linspace(-400, 400, 1000)
+        x = x_axis[:, None]
+        for i in range(1, order):
+            x = np.append(x, x[:, 0:1] ** (i + 1), axis=1)
+        x = np.append(x, np.ones((x.shape[0], 1)), axis=1)
+
+        model = (lr.model.T @ x.T).T
+        plot.plot(x_axis, model, c='green', label="modelo")
+        plot.legend()
         plot.show()
+
+        # Si se compara el modelo obtenido con mini batch vs el deterministico de cuadrados minimos, se puede ver como
+        # en cuadrados minimos el fit es casi perfecto, mientras que en mini Batch si bien el modelo toma "la forma"
+        # de la curva, tiene cierto desvio. De hecho si vamos a los numeros, el MSE de cuadrados minimos fue de 12
+        # mientras que el de mini batch es de 153 es decir un orden de magnitud mas grande.
+        # Es probable tambien que esta diferencia tan grande sea debido a que los valores de x eran grandes y hacia que
+        # el algoritmo diverja muy rápido
 
 
 if __name__ == '__main__':
