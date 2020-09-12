@@ -1,9 +1,9 @@
 import numpy as np
 
-from src.computerVision.Filter import Filter
+from src.computerVision.IFilter import IFilter
 
 
-class WhitePatchFilter(Filter):
+class WhitePatchIFilter(IFilter):
 
     def apply(self, img: np.ndarray) -> np.ndarray:
         rgmMax = np.max(np.max(img, axis=0, keepdims=True),axis=1,keepdims=True)

@@ -1,9 +1,9 @@
 import numpy as np
 
-from src.computerVision.Filter import Filter
+from src.computerVision.IFilter import IFilter
 
 
-class ChromaticCoordinatesFilter(Filter):
+class ChromaticCoordinatesIFilter(IFilter):
 
     def apply(self, img: np.ndarray) -> np.ndarray:
         sum_channels = np.sum(img, axis=2, keepdims=True)

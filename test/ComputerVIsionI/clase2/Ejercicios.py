@@ -3,8 +3,8 @@ import cv2 as cv
 import matplotlib.pyplot as plt
 import numpy as np
 
-from src.computerVision.Filters.PixelWise.ChromaticCoordinatesFilter import ChromaticCoordinatesFilter
-from src.computerVision.Filters.PixelWise.WhitePatchFilter import WhitePatchFilter
+from src.computerVision.Filters.PixelWise.ChromaticCoordinatesFilter import ChromaticCoordinatesIFilter
+from src.computerVision.Filters.PixelWise.WhitePatchFilter import WhitePatchIFilter
 
 
 class Ejercicios(unittest.TestCase):
@@ -13,7 +13,7 @@ class Ejercicios(unittest.TestCase):
         img2: np.ndarray = cv.imread('./resources/CoordCrom_2.png')
         img3: np.ndarray = cv.imread('./resources/CoordCrom_3.png')
 
-        filter = ChromaticCoordinatesFilter()
+        filter = ChromaticCoordinatesIFilter()
 
         img1_codenadas_crom = filter.apply(img)
         img2_codenadas_crom = filter.apply(img2)
@@ -34,7 +34,7 @@ class Ejercicios(unittest.TestCase):
         img2: np.ndarray = cv.imread('./resources/WP_O.png')
         img3: np.ndarray = cv.imread('./resources/WP_B.png')
 
-        filter = WhitePatchFilter()
+        filter = WhitePatchIFilter()
 
         img1_codenadas_crom = filter.apply(img)
         img2_codenadas_crom = filter.apply(img2)
