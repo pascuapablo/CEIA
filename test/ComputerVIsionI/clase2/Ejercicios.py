@@ -3,8 +3,8 @@ import cv2 as cv
 import matplotlib.pyplot as plt
 import numpy as np
 
-from src.computerVision.Filters.PixelWise.ChromaticCoordinatesFilter import ChromaticCoordinatesIFilter
-from src.computerVision.Filters.PixelWise.WhitePatchFilter import WhitePatchIFilter
+from src.computerVision.Filters.PixelWise.ChromaticCoordinatesFilter import ChromaticCoordinatesFilter
+from src.computerVision.Filters.PixelWise.WhitePatchFilter import WhitePatchFilter
 
 
 class Ejercicios(unittest.TestCase):
@@ -13,7 +13,7 @@ class Ejercicios(unittest.TestCase):
         img2: np.ndarray = cv.imread('./resources/CoordCrom_2.png')
         img3: np.ndarray = cv.imread('./resources/CoordCrom_3.png')
 
-        filter = ChromaticCoordinatesIFilter()
+        filter = ChromaticCoordinatesFilter()
 
         img1_codenadas_crom = filter.apply(img)
         img2_codenadas_crom = filter.apply(img2)
@@ -27,14 +27,13 @@ class Ejercicios(unittest.TestCase):
         plt.subplot(236).imshow(img3_codenadas_crom, vmin=0, vmax=255)
 
         plt.show()
-        self.assertEqual(True, False)
 
     def test_ejercicio_2(self):
-        img: np.ndarray = cv.imread('./resources/WP_R.png')
-        img2: np.ndarray = cv.imread('./resources/WP_O.png')
-        img3: np.ndarray = cv.imread('./resources/WP_B.png')
+        img: np.ndarray = cv.imread('./resources/test_green.png')
+        img2: np.ndarray = cv.imread('./resources/test_blue.png')
+        img3: np.ndarray = cv.imread('./resources/test_red.png')
 
-        filter = WhitePatchIFilter()
+        filter = WhitePatchFilter()
 
         img1_codenadas_crom = filter.apply(img)
         img2_codenadas_crom = filter.apply(img2)
@@ -46,9 +45,7 @@ class Ejercicios(unittest.TestCase):
         plt.subplot(234).imshow(img1_codenadas_crom, vmin=0, vmax=255)
         plt.subplot(235).imshow(img2_codenadas_crom, vmin=0, vmax=255)
         plt.subplot(236).imshow(img3_codenadas_crom, vmin=0, vmax=255)
-
         plt.show()
-        self.assertEqual(True, False)
 
 
 if __name__ == '__main__':

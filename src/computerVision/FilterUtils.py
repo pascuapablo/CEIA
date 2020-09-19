@@ -6,7 +6,7 @@ from src.computerVision.IFilter import IFilter
 
 
 class FilterUtils:
-    def applyAll(self, img: np.ndArray, filters: List[IFilter]):
+    def applyAll(self, img: np.ndarray, filters: List[IFilter]):
         out = img
         for f in filters:
             out = f.apply(out)

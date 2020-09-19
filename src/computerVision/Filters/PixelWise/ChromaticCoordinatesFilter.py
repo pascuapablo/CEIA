@@ -3,7 +3,7 @@ import numpy as np
 from src.computerVision.IFilter import IFilter
 
 
-class ChromaticCoordinatesIFilter(IFilter):
+class ChromaticCoordinatesFilter(IFilter):
 
     def apply(self, img: np.ndarray) -> np.ndarray:
         sum_channels = np.sum(img, axis=2, keepdims=True)
