@@ -6,9 +6,9 @@ from src.computerVision.IFilter import IFilter
 
 class GaussianBlurFilter(IFilter):
 
-    def __init__(self, size, sigma) -> None:
+    def __init__(self, size: int = 5, sigma=2) -> None:
         super().__init__()
-        self.size = size
+        self.size = (size, size)
         self.sigma = sigma
 
     def apply(self, img: np.ndarray) -> np.ndarray:

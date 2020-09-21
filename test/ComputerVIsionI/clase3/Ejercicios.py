@@ -18,14 +18,14 @@ class Ejercicios(unittest.TestCase):
     def test_calculo_de_gradientes(self):
         img: np.ndarray = cv.imread('./resources/metalgrid.jpg')
         img = np.mean(img, axis=2)
-        img_filtered = FilterUtils().applyAll(img, [
-            GaussianBlurFilter((5, 5), 2),
+        img_filtered = FilterUtils(img).apply_all([
+            GaussianBlurFilter(5, 2),
             RemoveZeros()])
 
-        Gx = FilterUtils().applyAll(img_filtered, [
+        Gx = FilterUtils(img_filtered).apply_all([
             SobelXFilter(),
             RemoveZeros()])
-        Gy = FilterUtils().applyAll(img_filtered, [
+        Gy = FilterUtils(img_filtered).apply_all([
             SobelYFilter(),
             RemoveZeros()])
 
@@ -70,15 +70,15 @@ class Ejercicios(unittest.TestCase):
     def test_calculo_de_gradientes_tela(self):
         img: np.ndarray = cv.imread('./resources/tela2.jpg')
         img = np.mean(img, axis=2).astype(np.uint8)
-        img_filtered = FilterUtils().applyAll(img, [
+        img_filtered = FilterUtils(img).apply_all([
             BilateralFilter(10),
             WhitePatchFilter(),
             RemoveZeros()])
 
-        Gx = FilterUtils().applyAll(img_filtered, [
+        Gx = FilterUtils(img_filtered).apply_all([
             SobelXFilter(),
             RemoveZeros()])
-        Gy = FilterUtils().applyAll(img_filtered, [
+        Gy = FilterUtils(img_filtered).apply_all([
             SobelYFilter(),
             RemoveZeros()])
 
