@@ -44,6 +44,7 @@ class Ejercicios(unittest.TestCase):
         plt.plot(validation_error, c='blue', label='validation')
         plt.legend()
         plt.show()
+        # La grafica esta guradada en ./resources/trainning_error.png
 
 
 if __name__ == '__main__':
