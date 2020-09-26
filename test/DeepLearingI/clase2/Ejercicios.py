@@ -30,22 +30,19 @@ class Ejercicios(unittest.TestCase):
 
         train_error, validation_error = nn.fit(x_train, y_train, n_epochs=5000, learning_rate=0.005, batch_size=16)
 
+        y_predict = nn.predict(x_test)
+
+        metrics = [Recall(), Selectivity(), Precision()]
+        for metric in metrics:
+            print(metric.get_name() + ":", metric(y_test, y_predict))
+        # Recall: 95.74468085106383
+        # Selectivity: 98.83720930232558
+        # Precision: 94.73684210526315
+
         plt.figure()
         plt.plot(train_error, c='red', label='train')
         plt.plot(validation_error, c='blue', label='validation')
         plt.legend()
-        # plt.show()
-
-        y_predict = nn.predict(x_test)
-
-        metrics = [Recall(), Selectivity(), Precision()]
-
-        for metric in metrics:
-            print(metric.get_name() + ":", metric(y_test, y_predict))
-
-        plt.figure()
-        plt.plot(y_test, 'o')
-        plt.plot(y_predict, 'x')
         plt.show()
 
 
